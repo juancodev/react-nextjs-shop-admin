@@ -8,15 +8,23 @@ export default function LoginPage() {
   const passwordRef = useRef(null);
 
   const submitLogin = (event) => {
-    event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const { signIn } = auth;
-    signIn(email, password).then(console.log('login success'));
+    event.preventDefault();
+    signIn(email, password).then(() => {
+      auth.setError('');
+      console.log('login success');
+    });
   };
 
   return (
     <>
+      {auth.error && (
+        <div>
+          <p>{auth.error}</p>
+        </div>
+      )}
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
