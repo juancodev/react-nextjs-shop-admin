@@ -21,7 +21,13 @@ const useAuth = () => {
         setError(error.message);
       });
     if (access_token) {
-      Cookie.set('token', access_token.access_token, { expires: 5 });
+      const token = access_token.access_token;
+      Cookie.set('token', token, { expires: 5 });
+
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      const { data: user } = await axios.get(endPoints.auth.profile);
+      console.log(user);
+      setUser(user);
     }
   };
 
