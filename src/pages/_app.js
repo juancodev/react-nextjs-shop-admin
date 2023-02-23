@@ -1,17 +1,15 @@
-import '@/styles/tailwind.css';
+import { ProviderAuth } from '@/hooks/useAuth';
 import MainLayout from '@/layout/MainLayout';
-import { AuthContext } from '@/context/AuthContext';
-import { useAuth } from '@/hooks/useAuth';
+import '@/styles/tailwind.css';
 
 export default function App({ Component, pageProps }) {
-  const auth = useAuth();
   return (
     <>
-      <AuthContext.Provider value={auth}>
+      <ProviderAuth>
         <MainLayout>
           <Component {...pageProps} />
         </MainLayout>
-      </AuthContext.Provider>
+      </ProviderAuth>
     </>
   );
 }

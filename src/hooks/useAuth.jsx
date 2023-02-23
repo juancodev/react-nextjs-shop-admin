@@ -1,9 +1,20 @@
-import { useState } from 'react';
+import { useState, useContext, createContext } from 'react';
 import Cookie from 'js-cookie';
 import axios from 'axios';
 import endPoints from '@/api/api.escuelajs';
 
-const useAuth = () => {
+const AuthContext = createContext();
+
+export function ProviderAuth({ children }) {
+  const auth = useProvideAuth();
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+}
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+const useProvideAuth = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
 
@@ -24,7 +35,7 @@ const useAuth = () => {
       const token = access_token.access_token;
       Cookie.set('token', token, { expires: 5 });
 
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const { data: user } = await axios.get(endPoints.auth.profile);
       console.log(user);
       setUser(user);
@@ -38,5 +49,3 @@ const useAuth = () => {
     setError,
   };
 };
-
-export { useAuth };
