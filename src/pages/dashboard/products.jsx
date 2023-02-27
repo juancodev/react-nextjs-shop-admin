@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import endPoints from '@/api/api.escuelajs';
+import useAlert from '@/hooks/useAlert';
 import Modal from '@/common/Modal';
 import FormProduct from '@/components/FormProduct';
-import useAlert from '@/hooks/useAlert';
 import Alert from '@/common/Alert';
+import { deleteProduct } from '@/api/products';
 import { PlusIcon } from '@heroicons/react/20/solid';
+import { TrashIcon } from '@heroicons/react/24/solid';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -24,6 +26,26 @@ export default function Products() {
       console.log(error);
     }
   }, [alert]);
+
+  const handleDelete = (id) => {
+    try {
+      deleteProduct(id).then(() => {
+        setAlert({
+          active: true,
+          message: 'Deleted product successfully',
+          type: 'error',
+          autoClose: false,
+        });
+      });
+    } catch (error) {
+      setAlert({
+        active: true,
+        message: error.message,
+        type: 'error',
+        autoClose: false,
+      });
+    }
+  };
 
   return (
     <>
@@ -89,7 +111,7 @@ export default function Products() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {products?.map((product) => (
-                    <tr key={`Product-item-${product.id}`}>
+                    <tr key={`Product-item-${product?.id}`}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
@@ -97,29 +119,29 @@ export default function Products() {
                               width={10}
                               height={10}
                               className="h-10 w-10 rounded-full"
-                              src={product.images[0]}
+                              src={product?.images[0]}
                               alt=""
                             />
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">
-                              {product.title}
+                              {product?.title}
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {product.category.name}
+                          {product?.category?.name}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          ${product.price}
+                          ${product?.price}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {product.id}
+                        {product?.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a
@@ -130,12 +152,10 @@ export default function Products() {
                         </a>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="/edit"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Delete
-                        </a>
+                        <TrashIcon
+                          className=""
+                          onClick={handleDelete(product?.id)}
+                        />
                       </td>
                     </tr>
                   ))}
