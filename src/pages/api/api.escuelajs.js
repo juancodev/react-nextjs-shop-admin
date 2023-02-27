@@ -8,6 +8,7 @@ const endPoints = {
     refreshToken: `${API}/api/${VERSION}/auth/refresh-token`,
   },
   products: {
+    allProducts: `${API}/api/${VERSION}/products/`,
     getProducts: (limit, offset) =>
       `${API}/api/${VERSION}/products?limit=${limit}&offset=${offset}`,
     postProducts: `${API}/api/${VERSION}/products`,

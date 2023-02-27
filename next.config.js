@@ -13,6 +13,11 @@ const nextConfig = {
         hostname: 'api.lorem.space',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'placeimg.com',
+        port: '',
+      },
     ],
   },
 };
