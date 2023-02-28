@@ -42,10 +42,18 @@ const useProvideAuth = () => {
     }
   };
 
+  const logout = () => {
+    Cookie.remove('token');
+    setUser(null);
+    delete axios.defaults.headers.common['Authorization'];
+    window.location.href = '/login';
+  };
+
   return {
     user,
     signIn,
     error,
     setError,
+    logout,
   };
 };

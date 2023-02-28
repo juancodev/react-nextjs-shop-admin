@@ -18,6 +18,21 @@ const nextConfig = {
         hostname: 'placeimg.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'renzocosta.vteximg.com.br',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.nike.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+      },
     ],
   },
 };
